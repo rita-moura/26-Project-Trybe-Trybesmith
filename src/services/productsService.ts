@@ -1,18 +1,10 @@
 import { Product } from '../interfaces/product';
-import ProductModel from '../models/productsModel';
+import * as productModel from '../models/productsModel';
 
-export default class PorductService {
-  model: ProductModel;
+export async function create(product: Product): Promise<Product> {
+  return productModel.create(product);
+}
 
-  constructor() {
-    this.model = new ProductModel();
-  }
-
-  async create(product: Product): Promise<Product> {
-    return this.model.create(product);
-  }
-
-  async getAll(): Promise<Product[]> {
-    return this.model.getAll();
-  }
+export async function getAll(): Promise<Product[]> {
+  return productModel.getAll();
 }

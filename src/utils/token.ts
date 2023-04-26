@@ -8,7 +8,7 @@ const jwtConfig: SignOptions = {
   algorithm: 'HS256',
 };
 
-function generateToken(payload: User) {
+export function generateToken(payload: User) {
   return jwt.sign({
     data: {
       username: payload.username,
@@ -18,4 +18,6 @@ function generateToken(payload: User) {
   }, secretKey, jwtConfig);
 }
 
-export default generateToken;
+export function validateToken(token: string) {
+  return jwt.verify(token, secretKey);
+}

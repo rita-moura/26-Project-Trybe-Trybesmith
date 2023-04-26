@@ -1,17 +1,8 @@
 import { Request, Response } from 'express';
-import OrderService from '../services/ordersService';
+import getAllService from '../services/ordersService';
 
-export default class OrderController {
-  service: OrderService;
+export default async function getAll(_req: Request, res: Response): Promise<void> {
+  const orders = await getAllService();
 
-  constructor() {
-    this.service = new OrderService();
-    this.getAll = this.getAll.bind(this);
-  }
-
-  async getAll(_req: Request, res: Response): Promise<void> {
-    const orders = await this.service.getAll();
-
-    res.status(200).json(orders);
-  }
+  res.status(200).json(orders);
 }

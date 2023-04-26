@@ -1,19 +1,16 @@
 import { Request, Response } from 'express';
-import UserService from '../services/usersService';
-import generateToken from '../utils/token';
+import * as userService from '../services/usersService';
+import { generateToken } from '../utils/token';
 
-export default class UserController {
-  service: UserService;
+export async function create(req: Request, res: Response): Promise<void> {
+  const user = await userService.create(req.body);
+  const token = generateToken(user);
+  res.status(201).json({ token });
+}
 
-  constructor() {
-    this.service = new UserService();
-    this.create = this.create.bind(this);
-  }
+export async function loginUser(req: Request, res: Response): Promise<void> {
+  const login = await userService.login(req.body);
+  const token = generateToken(login);
 
-  async create(req: Request, res: Response): Promise<void> {
-    const user = await this.service.create(req.body);
-    const token = generateToken(user);
-
-    res.status(201).json({ token });
-  }
+  res.status(200).json({ token });
 }

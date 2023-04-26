@@ -1,14 +1,10 @@
 import { User } from '../interfaces/user';
-import UserModel from '../models/usersModel';
+import * as userModel from '../models/usersModel';
 
-export default class UserService {
-  model: UserModel;
+export async function create(user: User): Promise<User> {
+  return userModel.create(user);
+}
 
-  constructor() {
-    this.model = new UserModel();
-  }
-
-  async create(user: User): Promise<User> {
-    return this.model.create(user);
-  }
+export async function login(user: User): Promise<User> {
+  return userModel.findByUsername(user);
 }

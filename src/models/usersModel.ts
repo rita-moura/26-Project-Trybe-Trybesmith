@@ -1,20 +1,23 @@
-import { Pool, ResultSetHeader } from 'mysql2/promise';
+import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import connection from './connection';
 import { User } from '../interfaces/user';
 
-export default class UserModel {
-  connection: Pool;
+export async function create(user: User): Promise<User> {
+  const [{ insertId }] = await connection.execute<ResultSetHeader>(
+    'INSERT INTO Trybesmith.users (username, vocation, level, password) VALUES (?, ?, ?, ?)', 
+    [user.username, user.vocation, user.level, user.password],
+  );
 
-  constructor() {
-    this.connection = connection;
-  }
+  return { id: insertId, ...user };
+}
 
-  async create(user: User): Promise<User> {
-    const [{ insertId }] = await this.connection.execute<ResultSetHeader>(
-      'INSERT INTO Trybesmith.users (username, vocation, level, password) VALUES (?, ?, ?, ?)', 
-      [user.username, user.vocation, user.level, user.password],
-    );
+export async function findByUsername({ username, password }: User): Promise<User> {
+  const [user] = await connection.execute<User & RowDataPacket[]>(
+    'SELECT * FROM Trybesmith.users WHERE username = ? AND password = ?',
+    [username, password],
+  );
 
-    return { id: insertId, ...user };
-  }
+  console.log('model', user);
+    
+  return user;
 }
