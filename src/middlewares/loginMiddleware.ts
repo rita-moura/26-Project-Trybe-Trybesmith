@@ -1,12 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
-import { Login } from '../interfaces/login';
+import Joi from 'joi';
+
+const loginSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().required(),
+});
 
 export default function validateLogin(req: Request, res: Response, next: NextFunction) {
-  const { username, password } = req.body as Login;
+  const login = req.body;
 
-  if (!username) return res.status(400).json({ message: '"username" is required' });
+  const { error } = loginSchema.validate(login);
 
-  if (!password) return res.status(400).json({ message: '"password" is required' });
+  if (error) return res.status(400).json({ message: error.message });
 
   next();
 }
