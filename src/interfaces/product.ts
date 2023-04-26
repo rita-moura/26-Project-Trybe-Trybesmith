@@ -4,8 +4,3 @@ export interface Product {
   amount: string;
   orderId?: number;
 }
-
-export interface Validation {
-  type: number | string;
-  message: string;
-}

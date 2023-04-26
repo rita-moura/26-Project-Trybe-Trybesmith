@@ -3,7 +3,14 @@ import * as userService from '../services/usersService';
 import { generateToken } from '../utils/token';
 
 export async function create(req: Request, res: Response) {
-  const user = await userService.create(req.body);
+  const user = req.body;
+  const newUser = await userService.create(req.body);
+  
+  if ('message' in newUser) {
+    const { type, message } = newUser;
+    return res.status(type as number).json({ message });
+  }
+  
   const token = generateToken(user);
   res.status(201).json({ token });
 }
