@@ -12,7 +12,7 @@ export async function create(req: Request, res: Response) {
   }
   
   const token = generateToken(user);
-  res.status(201).json({ token });
+  return res.status(201).json({ token });
 }
 
 export async function loginUser(req: Request, res: Response) {
@@ -22,5 +22,5 @@ export async function loginUser(req: Request, res: Response) {
 
   if (!user) return res.status(401).json({ message: 'Username or password invalid' });
 
-  res.status(200).json({ token });
+  return res.status(200).json({ token });
 }
