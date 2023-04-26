@@ -13,10 +13,7 @@ export async function loginUser(req: Request, res: Response) {
   const user = await userService.loginUser(login);
   const token = generateToken(login);
 
-  if (!user) {
-    res.status(401).json({ message: 'Username or password invalid' });
-    return;
-  }
+  if (!user) return res.status(401).json({ message: 'Username or password invalid' });
 
   res.status(200).json({ token });
 }
