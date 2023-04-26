@@ -10,7 +10,7 @@ export async function create(req: Request, res: Response) {
     return res.status(type as number).json({ message });
   }
 
-  res.status(201).json(product);
+  res.status(201).json(newProduct);
 }
 
 export async function getAll(_req: Request, res: Response) {
